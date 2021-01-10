@@ -35,8 +35,8 @@ function OrderLocation({onChangeLocation}: Props){
             label: item.place_name,
             value: item.place_name,
             position: {
-              lat: item.center[1],
-              lng: item.center[0]
+                lat: item.center[1],
+                lng: item.center[0]
             },
             place: item.place_name,
           });
@@ -48,9 +48,9 @@ function OrderLocation({onChangeLocation}: Props){
       const handleChangeSelect = (place: Place) => {
         setAddress(place);
         onChangeLocation({
-          latitude: place.position.lat,
-          longitude: place.position.lng,
-          address: place.label!
+            latitude: place.position.lat,
+            longitude: place.position.lng,
+            address: place.label!
         });
       };
 
