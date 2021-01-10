@@ -14,10 +14,11 @@ function ProductsList({ products, selectedProducts, onSelectProduct}: Props){
             <div className="orders-list-items">
                {products.map(product => (
                    <ProductCard 
-                    key={product.id} 
-                    product={product} 
-                    onSelectProduct={onSelectProduct} 
-                    isSelected={checkIsSelected(selectedProducts, product)}/>
+                        key={product.id} 
+                        product={product} 
+                        onSelectProduct={onSelectProduct} 
+                        isSelected={checkIsSelected(selectedProducts, product)}
+                    />
                ))}
             </div>
         </div>
