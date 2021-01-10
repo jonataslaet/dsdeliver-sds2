@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchProducts } from '../api';
+import { fetchProducts, saveOrder } from '../api';
 import OrderLocation from './OrderLocation';
 import OrderSummary from './OrderSummary';
 import ProductsList from './ProductsList';
@@ -8,6 +8,7 @@ import './styles.css';
 import Footer from '../Footer';
 import { OrderLocationData, Product } from './types';
 import { checkIsSelected } from './helpers';
+import { toast } from 'react-toastify';
 
 function Order(){
 
@@ -21,7 +22,9 @@ function Order(){
     useEffect(()=>{
         fetchProducts()
             .then(response => setProducts(response.data))
-            .catch(error => console.log(error))
+            .catch(() => {
+                toast.warning('Erro ao enviar pedido');
+            })
     }, []);
 
     const handleSelectProduct = (product: Product) => {
@@ -35,14 +38,31 @@ function Order(){
         }
     }
 
+    const handleSubmit = () => {
+        const productsIds = selectedProducts.map(({ id }) => ({ id }));
+        const payload = {
+          ...orderLocation!,
+          products: productsIds
+        }
+      
+        saveOrder(payload)
+            .then((response) => {
+                toast.error(`Pedido enviado com sucesso! Nº${response.data.id}`);
+                setSelectedProducts([]);
+            })
+            .catch(() => {
+                toast.warning('Erro ao enviar pedido');
+            }
+        )
+    }
+
     return (
         <>
             <div className="orders-container">
                 <StepsHeader/>
                 <ProductsList products = {products} onSelectProduct={handleSelectProduct} selectedProducts={selectedProducts}/>
                 <OrderLocation onChangeLocation={location => setOrderLocation(location)}/>
-                <OrderSummary amount={selectedProducts.length} totalPrice={totalPrice}/>
-
+                <OrderSummary amount={selectedProducts.length} totalPrice={totalPrice} onSubmit={handleSubmit}/>
             </div>
             <Footer/>
         </>
