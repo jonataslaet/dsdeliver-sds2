@@ -89,6 +89,10 @@ public class Order implements Serializable{
 		this.moment = moment;
 	}
 
+	public Double getTotal() {
+		return products.stream().map(p -> p.getPrice()).reduce(0.0, (a,b) -> a + b);
+	}
+	
 	public OrderStatus getStatus() {
 		return status;
 	}
